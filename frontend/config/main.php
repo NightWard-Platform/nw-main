@@ -12,6 +12,13 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'rabbitmq' => [
+            'class' => 'app\common\components\RabbitMq',
+            'host' => 'rabbitmq',
+            'port' => 5672,
+            'user' => 'admin',
+            'password' => 'admin'
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
