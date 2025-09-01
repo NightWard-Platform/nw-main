@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\User;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -83,6 +84,11 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    public function actionTest()
+    {
+        $model = User::findOne(2);
+        return json_encode($model->attributes);
+    }
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -100,6 +106,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Logs out the current user.

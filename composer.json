@@ -19,7 +19,7 @@
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "yiisoft/yii2-redis": "^2.0",
-        "php-amqplib/php-amqplib": "^2.0",
+        "php-amqplib/php-amqplib": "^3.5",
         "inpassor/yii2-daemon": "^0.3.4"
     },
     "require-dev": {

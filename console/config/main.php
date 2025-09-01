@@ -15,6 +15,9 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@common' => dirname(__DIR__, 2) . '/common',
+        '@backend' => dirname(__DIR__, 2) . '/backend',
+        '@frontend' => dirname(__DIR__, 2) . '/frontend',
     ],
     'controllerMap' => [
         'daemon' => [
@@ -38,6 +41,13 @@ return [
         ],
     ],
     'components' => [
+        'rabbitmq' => [
+            'class' => 'common\components\RabbitMq',
+            'host' => 'rabbitmq',
+            'port' => 5672,
+            'user' => 'admin',
+            'password' => 'admin'
+        ],
         'log' => [
             'targets' => [
                 [
