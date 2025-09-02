@@ -28,25 +28,30 @@ class Model extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-
-        $event = $insert ? self::tableName() . ".create" : self::tableName() . ".update";
-        Yii::$app->rabbitMq->exchange_publish(
-            $event,
-            json_encode([
-                'id' => $this->id,
-                'attributes' => $this->sttributes,
-                'changed' => $changedAttributes,
-            ])
-        );
+        if (in_array($this->getTableSchema()->name, Yii::$app->params['webhooks_produce'])) {
+            $tableName = self::getTableSchema()->name;
+            $event = $insert ? $tableName . ".create" : $tableName . ".update";
+            Yii::$app->rabbitmq->exchange_publish(
+                $event,
+                json_encode([
+                    'id' => $this->id,
+                    'model_name' => (new \ReflectionClass($this))->getShortName(),
+                    'attributes' => $this->attributes,
+                    'changed' => $changedAttributes,
+                ])
+            );
+        }
     }
     public function afterDelete()
     {
         parent::afterDelete();
-        Yii::$app->rabbitMq->exchange_publish(
-            self::tableName() . ".delete",
-            json_encode([
-                'id' => $this->id
-            ])
-        );
+        if (in_array($this->getTableSchema()->name, Yii::$app->params['webhooks_produce'])) {
+            Yii::$app->rabbitmq->exchange_publish(
+                self::getTableSchema()->name . ".delete",
+                json_encode([
+                    'id' => $this->id
+                ])
+            );
+        }
     }
 }
